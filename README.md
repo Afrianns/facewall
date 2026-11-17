@@ -18,6 +18,14 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
+## Supabase feed setup
+
+The feed expects `public.users` to have `id`, `auth_id`, `name`, `email`, and `profile_url`, and `public.feeds` to have `id`, `created_at`, `user_id`, `message`, and `image_url`. `users.auth_id` links to `auth.users.id`; `feeds.user_id` links to `users.id`. Passwords are handled only by Supabase Auth.
+
+The app loads feed rows and author profiles under the signed-in user's RLS policies. Allow authenticated users to read the feed and author display fields, read their own profile, insert feed rows linked to their own `users.id`, and update their own profile. If the Auth trigger did not create a profile, the app attempts to insert one using the authenticated user's `auth_id`, email, and name. That fallback needs an authenticated insert policy on `public.users`.
+
+Post and profile image uploads use the `wall` Supabase Storage bucket. Each profile photo overwrites the single object at `users/{auth.uid()}/profile`; post images are stored at unique paths under `feeds/{auth.uid()}/...`. The app removes unused objects in the caller's `users/{auth.uid()}/` folder after profile changes. Allow authenticated select/list, insert, update, and delete access only in the matching caller-owned folder. The bucket must be public because the feed stores and displays public image URLs.
+
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
 ## Learn More
