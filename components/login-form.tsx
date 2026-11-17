@@ -77,11 +77,8 @@ export default function LoginForm() {
           href="/"
           aria-label="Wall home"
         >
-          <span className="grid size-[30px] place-items-center rounded-[9px] bg-primary pb-1 pr-[3px] text-[23px] leading-none tracking-[-2px] text-primary-foreground">
-            w
-          </span>
           <span>
-            wall<span className="text-primary">.</span>
+            Facewall<span className="text-primary">.</span>
           </span>
         </Link>
 
@@ -104,7 +101,7 @@ export default function LoginForm() {
                 type="button"
                 className={`rounded-md px-3 py-2 text-sm font-medium ${
                   authMode === mode
-                    ? "bg-background text-foreground"
+                    ? "bg-white text-foreground"
                     : "text-muted-foreground hover:text-foreground"
                 }`}
                 aria-pressed={authMode === mode}

@@ -268,11 +268,15 @@ export default function WallFeed({
 
         if (userIds.length > 0) {
           const { data: usersData, error: usersError } = await client
-            .from("users")
+            .from("user_profiles")
             .select("id, name, profile_url")
             .in("id", userIds);
 
-          if (usersError) throw usersError;
+          if (usersError) {
+            throw new Error(
+              `Unable to load post authors: ${usersError.message}. Apply the public.user_profiles view from supabase/user_profiles.sql.`,
+            );
+          }
           authors = new Map(
             ((usersData ?? []) as UserRow[]).map((author) => [
               author.id,
